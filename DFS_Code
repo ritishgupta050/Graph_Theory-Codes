@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph
+{
+public:
+    map<int, int > visited;
+    map<int, list<int> > adj;
+
+    void add(int v,int w);
+
+    void dfs(int v);
+};
+
+void Graph :: add(int v,int w)
+{
+    adj[v].push_back(w);
+}
+
+void Graph :: dfs(int v)
+{
+    visited[v] = 1;
+    cout<<v<<" ";
+
+    list<int> :: iterator it;
+    for(it = adj[v].begin();it != adj[v].end();++it)
+    {
+        if(!visited[*it])
+            dfs(*it);
+    }
+}
+
+int main()
+{
+    Graph g;
+
+    g.add(0,1);
+    g.add(0,9);
+    g.add(1,2);
+    g.add(2,0);
+    g.add(2,3);
+    g.add(9,3);
+
+    g.dfs(1);
+}
