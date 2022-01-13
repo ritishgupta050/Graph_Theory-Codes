@@ -1,0 +1,72 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int MAX = 1e4;                                   
+pair<long, pair<int,int> > p[MAX];
+int d[MAX],nodes,edges;
+
+void initialize()
+{
+    for(int i=0;i<MAX;i++)
+    {
+        d[i] = i;
+    }
+}
+
+long root(int x)
+{
+    while(d[x] != x)
+    {
+        d[x] = d[d[x]];
+        x = d[x];
+    }
+    return x;
+}
+
+void unon(int x, int y)
+{
+    int a = root(x);
+    int b = root(y);
+    d[a] = d[b];
+}
+
+long kruskal(pair<long, pair<int,int> > p[])
+{
+    int x,y;
+    long min_cost = 0,cost;
+
+    for(int i=0;i<edges;i++)
+    {
+        x = p[i].second.first;
+        y = p[i].second.second;
+        cost = p[i].first;
+
+        if(root(x) != root(y))
+        {
+            min_cost += cost;
+            unon(x, y);
+        }
+    }
+    return min_cost;
+}
+
+int main()
+{
+    int x,y;
+    long weight,min_cost;
+
+    initialize();
+
+    cin>>nodes>>edges;
+
+    for(int i=0;i<edges;i++)
+    {
+        cin>>x>>y>>weight;
+        p[i] = make_pair(weight, make_pair(x, y));
+    }
+
+    sort(p, p + edges);
+
+    min_cost = kruskal(p);
+    cout<<min_cost<<endl;
+}
